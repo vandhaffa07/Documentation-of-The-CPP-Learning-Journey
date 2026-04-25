@@ -125,9 +125,9 @@ do {
     case 5 : {
       int pilihan5;
       cout << "Deret apa?" << endl;
-      cout << "1. Aritmatika\n2. Geometri" << endl;
-      cout << "Masukkan pilihan anda(1, 2) : ";
-      while (!(cin >> pilihan5) || pilihan5 > 2 || pilihan5 < 1 || cin.peek() == '.' || cin.peek() == ',' || cin.peek() == ' ') {
+      cout << "1. Aritmatika\n2. Geometri\n3. Fibonanci" << endl;
+      cout << "Masukkan pilihan anda(1, 2, 3) : ";
+      while (!(cin >> pilihan5) || pilihan5 > 3 || pilihan5 < 1 || cin.peek() == '.' || cin.peek() == ',' || cin.peek() == ' ') {
         cout << "Harap masukkan input yang valid : ";
         cin.clear();
         cin.ignore(1000, '\n');
@@ -196,11 +196,40 @@ do {
         cout << endl;
         break;
         }
+	case 3 : {
+	  int n;
+	  cout << "Masukkan banyaknya suku yang akan ditampilkan : ";
+          while (!(cin >> n) || n <= 0 || cin.peek() == '.' || cin.peek() == ',' || cin.peek() == ' ') {
+            cout << "Harap masukkan input yang valid : ";
+            cin.clear();
+            cin.ignore(1000, '\n');
+          }
+	  int a = 0;
+	  int b = 1;
+          cout << "Deret Fibonanci : ";
+	  for (int i = 1; i <=n; i++){
+	    if ( i == 1 ){
+	      cout << a << ", ";
+	    } else if ( i == 2 ){
+	      cout << b << ", ";
+	    }
+	    else {
+	    int sementara = a + b;
+	    a = b;
+	    b = sementara;
+	    cout << sementara ;
+	      if ( i < n ){
+		cout << ", ";
+	      }
+	    }
+	  }
+	break;
+	}
       }
     break;
     }
   }
-cout << "\nKembali ke menu? (y/n): ";
+cout << "\n\nKembali ke menu? (y/n): ";
 cin >> lagi;
 cout << endl;
 } while ( lagi == 'y' || lagi == 'Y' );
