@@ -63,14 +63,8 @@ g++ rand.cpp -o rand
 1804289383
 ```
 ```bash
-g++ rand.cpp -o rand
-```
-```bash
 ./rand
 1804289383
-```
-```bash
-g++ rand.cpp -o rand
 ```
 ```bash
 ./rand
