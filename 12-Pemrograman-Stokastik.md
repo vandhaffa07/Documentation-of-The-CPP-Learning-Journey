@@ -21,8 +21,8 @@ Library ini menyediakan akses ke hardware clock pada sistem. Fungsi utamanya ada
 
 ---
 
-### MEKANISME rand()
-rand() merupakan fungsi yang digunakan untuk menghasilkan bilangan bulat pseudo-acak antara 0 hingga RAND_MAX. Fungsi ini sebenarnya menjalankan sebuah persamaan matematika rekursif di balik layar, yang biasanya menggunakan mekanisme LCG (Linear Congruential Generator) dengan rumus seperti ini :
+### MEKANISME DETERMENISTIK PADA rand()
+rand() merupakan salah satu fungsi yang terdapat pada library cstdlib dan digunakan untuk menghasilkan bilangan bulat pseudo-acak antara 0 hingga RAND_MAX. Fungsi ini sebenarnya menjalankan sebuah persamaan matematika rekursif di balik layar, yang biasanya menggunakan mekanisme LCG (Linear Congruential Generator) dengan rumus seperti ini :
 
 $$
 X_{n+1} = (a \cdot X_n + c) \ mod \ m
@@ -72,13 +72,46 @@ g++ rand.cpp -o rand
 ```
 Maka, nilai yang dihasilkan oleh program tersebut akan selalu sama, hal ini dikarenakan sistem yang secara otomatis melakukan inisialisasi ulang nilai state saat ini menjadi nilai state awal standard pemrograman c++ saat program dimulai.
 
+---
 
+## srand() DAN time(0) SEBAGAI SUMBER ENTROPI
+berbeda dengan rand() yang secara otomatis menetapkan nilai state awal ($X_0$) dari standard bahasa pemrograman C++, srand() justru digunakan untuk memanipulasi dan menetapkan nilai state awal ($X_0$) ke dalam algoritma LCG sesuka hati kita. Perlu diketahui bahwa srand() tidak mengembalikan nilai apapun, ia hanyalah pengubah angka state awal yang terdapat pada sistem C++. Ini berarti, ketika kita ingin mengetahui dan menampilkan hasil nilai LCG yang state awalnya telah kita rubah, kita wajib menggabungkannya dengan fungsi rand() seperti ini :
+```bash
+nano srand.cpp
+```
+```c++
+#include <iostream>
+#include <cstdlib>
+using namespace std;
 
+int main() {
+  srand(9);
+  cout << rand() << endl;
+}
+```
+```bash
+g++ srand.cpp -o srand
+```
+```bash
+./srand
+444454915
+```
+Penting untuk dipahami pula bahwa parameter didalam srand wajib diisi dengan sesuatu yang bertipe data integer. Jika tidak, maka compiler akan menampilkan error.
 
-
-
-
-
+Meskipun begitu, srand() tetap saja tidak bisa menghancurkan tembok deterministik yang ada, ia hanya mengubah nilai state awal. Hal ini membuat program tetap selalu menghasilkan urutan angka yang pasti sama setiap kali dijalankan seperti pada kasus rand() sebelumnya : 
+```bash
+./srand
+444454915
+```
+```bash
+./srand
+444454915
+```
+```bash
+./srand
+444454915
+```
+Untuk membuatnya menghasilkan sesuatu yang selalu berubah setiap kali run, kita butuh sesuatu yang selalu berubah-ubah pula sebagai parameter dari fungsi srand() tersebut.
 
 
 
