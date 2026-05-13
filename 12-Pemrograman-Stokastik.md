@@ -111,7 +111,40 @@ Meskipun begitu, srand() tetap saja tidak bisa menghancurkan tembok deterministi
 ./srand
 444454915
 ```
-Untuk membuatnya menghasilkan sesuatu yang selalu berubah setiap kali run, kita butuh sesuatu yang selalu berubah-ubah pula sebagai parameter dari fungsi srand() tersebut.
+Untuk membuatnya menghasilkan sesuatu yang selalu berubah setiap kali kita melakukan run, kita butuh sesuatu yang selalu berubah-ubah pula sebagai parameter dari fungsi srand() tersebut. Dalam hal inilah fungsi time(0) dari library cstdlib berperan penting sebagai sumber entropi.
+
+Dengan menyuntikkan time(0) ke dalam parameter srand(), kita memberikan nilai detik Unix (Unix Epoch) yang terus bertambah sebagai state awal ($X_0$) dari algoritma LCG. Karena waktu tidak pernah berjalan mundur, maka setiap kali program dieksekusi, nilai X_0 yang diterima algoritma LCG akan selalu berbeda, sehingga rantai angka yang dihasilkan pun akan selalu unik.
+```bash
+nano time.cpp
+```
+```c++
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+int main() {
+  srand(time(0));
+  cout << rand() << endl;
+}
+```
+```bash
+g++ time.cpp -o time
+```
+```bash
+./time 
+1819059625
+```
+```bash
+./time 
+886748774
+```
+```bash
+./time 
+104805263
+```
+
+
+
 
 
 
