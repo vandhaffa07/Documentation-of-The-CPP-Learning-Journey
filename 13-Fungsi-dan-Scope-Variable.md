@@ -142,6 +142,40 @@ g++ fungsi_dengan_parameter.cpp -o fungsi_dengan_parameter
 
 
 ## MAIN() SEBAGAI FUNGSI UTAMA (ENTRY POINT)
-Setelah kita memahami anatomi dan mekanisme pengiriman data pada suatu fungsi, sekarang mari kita arahkan sudut pandang kita ke fungsi yang selalu kita tulis di setiap program, yakni `int main()`
+Setelah kita memahami anatomi dan mekanisme pengiriman data pada suatu fungsi, sekarang mari kita arahkan sudut pandang kita ke fungsi yang selalu kita tulis di setiap program, yakni `int main()`. Selama ini kita memperlakukan main sebagai wadah statis bawaan C++. Namun jika kita bedah berdasarkan anatomi struktur yang baru saja kita pelajari, `int main()` sebenarnya juga merupakan sebuah fungsi dimana ia memiliki tipe data, parameter, body, dan return. Namun, kita pun pasti bertanya-tanya : jika main merupakan sebuah fungsi, lantas mengapa perintah di dalam bodynya dapat dieksekusi tanpa ia harus dipanggil dan bahkan menjadi tempat untuk memanggil dan mengeksekusi fungsi-fungsi lainnya?
 
+Sebenarnya, "main" merupakan nama khusus yang dikenali oleh compiler dan Sistem Operasi sebagai Entry Point (titik gerbang utama) dimulainya eksekusi program. Mereka telah diprogram dengan standar konvensi bahwa saat sebuah program dijalankan, mereka akan otomatis mencari titik masuk utama (entry point) dan mencari fungsi bernama main sebagai instruksi pertama untuk memulai alur eksekusi kode. Lalu, bagaimana dengan `return 0`? Dikirimkan ke mana nilai tersebut?
+
+Nilai 0 sebenarnya dilempar keluar dari program dan ditangkap oleh Sistem Operasi sebagai Exit Status Code. Dalam konvensi arsitektur sistem operasi, nilai 0 biasanya merepresentasikan EXIT_SUCCESS yang mngartikan bahwa program kita berjalan lancar tanpa adanya indikasi error dari awal hingga akhir. Kita sebenarnya bisa saja mengganti angka 0 ini menjadi integer berapa pun ynag kita mau. Namun kembali lagi, dalam dunia system administration dan keamanan, setiap angka exit code memiliki arti khusus sehingga nilai 0 tetaplah yang paling disarankan untuk menandai keberhasilan eksekusi dan akhir dari program.
+
+Pada standar C++ modern (C++11 ke atas), jika kita lupa menuliskan `return 0;` di akhir fungsi main(), compiler secara implisit akan menyuntikkan `return 0;` secara otomatis saat proses kompilasi. Namun, menulisnya secara eksplisit adalah tindakan profesional yang tetap disarankan untuk menegaskan bahwa kita memegang kendali penuh atas terminasi state memori program sebelum dikembalikan ke kernel OS. Karena return 0 ini bisa kita jadikan layaknya break yang langsung keluar dari suatu proses :
+```bash
+nano return0_test.cpp
+```
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(){
+  int a = 7;
+  if ( a < 10 ){
+    return 0;
+  }
+  cout << a;
+  return 0;
+}
+```
+```bash
+g++ return0_test.cpp -o return0_test
+```
+```bash
+./return0_test
+```
+```bash
+
+```
+Dapat terlihat bahwa ketika kondisi a < 10 terpenuhi, program langsung berhenti dan tidak mengeksekusi instruksi cout << a; di bawahnya. Hal ini membuktikan secara nyata bahwa return 0; di dalam main() bertindak sebagai interupsi final yang langsung menghancurkan seluruh stack frame program dan mengembalikan kendali ke Sistem Operasi saat itu juga. Mekanisme pengkondisian terminasi dini ini nantinya akan sangat berguna saat kita membangun skrip otomasi, penanganan interupsi, maupun sistem keamanan validasi data.
+
+
+## FUNGSI VOID DAN NON-VOID
 
