@@ -1,4 +1,4 @@
-## FUNGSI DAN SCOPE VARIABLE
+## FUNGSI
 Dalam pemrograman, fungsi (atau function) adalah blok kode terpisah yang dirancang untuk menyelesaikan tugas tertentu. Ia menerima input (parameter), kemudian memprosesnya, dan menghasilkan atau mengembalikan suatu output. Penggunaan fungsi membuat kode lebih modular dan mudah dikelola.
 
 Jika kita tarik pada program-program yang telah kita buat sebelumnya, dapat diketahui bahwa seluruh program atau instruksi yang kita tulis, ditumpuk secara monolitik di dalam satu skop global entry point, yaitu `int main()`. Model penulisan ini sebenarnya tidak efisien untuk sistem berskala besar. Karena, ketika basis kode meluas, penumpukan instruksi akan menciptakan kode yang terlihat kompleks, meningkatkan risiko efek samping, serta menyulitkan proses pelacakan bug.
@@ -178,4 +178,149 @@ Dapat terlihat bahwa ketika kondisi a < 10 terpenuhi, program langsung berhenti 
 
 
 ## FUNGSI VOID DAN NON-VOID
+Berdasarkan ada atau tidaknya nilai kembalian (return value), fungsi dalam C++ secara garis besar diklasifikasikan menjadi dua jenis yakni Fungsi Non-Void dan Fungsi Void.
+
+### FUNGSI NON-VOID
+Seluruh fungsi yang telah kita pelajari dan buat sebelumnya (termasuk main() juga) merupakan representasi dari fungsi Non-Void. Fungsi jenis ini wajib mendefinisikan tipe data penanda di awal deklarasinya (seperti int, float, double, bool, string, dll) serta wajib dievakuasi dengan instruksi return yang membawa data hasil komputasi yang tipenya sinkron dengan penanda tersebut. Ketika dipanggil, fungsi jenis ini akan mengeksekusi instruksi internalnya dahulu, lalu mereduksi dirinya sendiri menjadi nilai akhir yang dikembalikannya :
+```bash
+nano non_void.cpp
+```
+```cpp
+#include <iostream>
+using namespace std;
+
+int fungsi_input(){
+  int a;
+  cout << "Masukkan Bilangan Bulat : ";
+  cin >> a;
+  return a;
+}
+
+int main(){
+  cout << fungsi_input() << endl;
+  return 0;
+}
+```
+```bash
+g++ non_void.cpp -o non_void
+```
+```bash
+./non_void
+```
+```bash
+Masukkan Bilangan Bulat : 5
+5
+```
+Dapat terlihat bahwa output dari program tersebut tidak langsung menampilkan nilai variabel a yang merupakan return dari fungsi bernama `fungsi_input()`, melainkan terlebih dahulu mengeksekusi perintah di dalam bodynya yakni menampilkan string "Masukkan Bilangan Bulat : " dan melakukaan console input dan barulah kemudian melakukan return sebagai nilai akhir yang nantinya akan ditampilkan pada terminal kita.
+
+### FUNGSI VOID
+Fungsi Void adalah jenis fungsi yang tidak menghasilkan dan tidak mengembalikan nilai data apa pun ke alur pemanggil. Fungsi ini murni diarsitektursikan untuk mengeksekusi serangkaian instruksi prosedural atau aksi nyata (side effects), seperti melakukan manipulasi tampilan I/O terminal dan mengubah status variabel global. Karena tidak memiliki data yang dilempar keluar memori, fungsi ini wajib diawali dengan kata void dan tidak memerlukan kata kunci return seperti ini :
+```cpp
+void nama_fungsi( parameter ){
+  instruksi
+}
+```
+Berikut adalah contoh program sederhana menggunakan void :
+```bash
+nano void.cpp
+```
+```cpp
+#include <iostream>
+using namespace std;
+
+void tampilkan_teks( string teks ){
+  cout << "Halo " << teks << endl;
+}
+
+int main(){
+  tampilkan_teks("dunia");
+  tampilkan_teks("teman-teman");
+  return 0;
+}
+```
+```bash
+g++ void.cpp -o void
+```
+```bash
+./void
+```
+```bash
+Halo dunia
+Halo teman-teman
+```
+Karena fungsi Void tidak mengembalikan data apa pun, kita tidak bisa memasukkan fungsi Void ke dalam instruksi pencetakan seperti `cout << tampilkan_teks("dunia");` ataupun mencoba menyimpannya ke dalam variabel seperti  `string x = tampilkan_teks("dunia");`. Jika kita tetap melakukannya, kompiler akan melempar fatal error karena sistem tidak mengenali cara memproses objek tanpa tipe data (void).
+
+
+## SCOPE VARIABLE
+Scope (cakupan) variabel dalam C++ adalah wilayah atau jangkauan dalam kode program di mana suatu variabel dapat diakses dan digunakan. Jika kode berada di luar wilayah tersebut, variabel tidak akan terbaca dan akan menyebabkan error. Scope sendiri terbagi menjadi 2 yakni Local Scope dan Global Scope 
+
+### LOCAL SCOPE ( VARIABEL LOKAL )
+Variabel Lokal adalah variabel yang dideklarasikan di dalam body suatu fungsi yang diapit oleh tanda kurung kurawal, termasuk variabel yang bertindak sebagai parameter. Variabel ini hanya hidup dan dapat diakses di dalam blok fungsi tempat ia dibuat. Ketika fungsi tersebut dipanggil, variabel lokal diciptakan. Ketika fungsi selesai dieksekusi (menyentuh tanda kurung kurawal tutup atau perintah return), variabel lokal ini akan langsung dihancurkan (deallocated) total dari RAM oleh CPU.
+
+### GLOBAL SCOPE ( VARIABEL GLOBAL )
+Variabel Global adalah variabel yang dideklarasikan di luar seluruh fungsi, biasanya diletakkan di bagian paling atas program (di bawah baris #include). Variabel ini dialokasikan di segmen memori statis dan hidup sepanjang program berjalan dari awal hingga selesai. Ia bersifat publik, artinya, seluruh fungsi yang ada di dalam program tersebut, baik main(), fungsi void, maupun non-void, memiliki hak akses penuh untuk membaca dan mengubah nilai variabel tersebut. Perhatikan kode berikut :
+```bash
+nano scope.cpp
+```
+```cpp
+#include <iostream>
+using namespace std;
+
+int variabelGlobal = 100; 
+
+void fungsi() {
+  int variabelLokal = 5; 
+  variabelGlobal = variabelGlobal + variabelLokal; 
+  cout << "Variabel Lokal Fungsi = " << variabelLokal << endl;
+  cout << "Variabel Global Berubah di Dalam Fungsi = " << variabelGlobal << endl;
+}
+
+int main() {
+  cout << "Variabel Global Awal = " << variabelGlobal << endl;
+  fungsi();
+  cout << "Variabel Global Sekarang = " << variabelGlobal << endl;
+  return 0;
+}
+```
+```bash
+g++ scope.cpp -o scope
+```
+```bash
+./scope
+```
+```bash
+Variabel Global Awal = 100
+Variabel Lokal Fungsi = 5
+Variabel Global Berubah di Dalam Fungsi = 105
+Variabel Global Sekarang = 105
+```
+Program pertama kali dijalankan dengan membaca dan menampilkan `variabelGlobal` bernilai 100 pada layar terminal kita. Pada titik ini, fungsi main() berhasil membaca memori global secara langsung. Kemudian, saat `fungsi()` dipanggil, CPU membuat Stack Frame baru dan mengalokasikan memori untuk variabel lokal baru bernama `variabelLokal` dengan nilai 5. Di dalam fungsi tersebut, variabelGlobal dimanipulasi dengan menjumlahkan nilainya dengan `variabelLokal` yakni $100 + 5 = 105$. Karena variabel global bersifat publik, perubahan nilainya yang menjadi 105 berhasil dikunci di dalam memori statis sistem. Begitu `fungsi()` berakhir, `variabelLokal` dihancurkan dari RAM. Saat alur kembali ke main, instruksi terakhir mencetak nilai `variabelGlobal` yang terbukti telah berubah secara permanen menjadi 105.
+
+Lalu bagaimana jika kita memaksa untuk memanggil dan menampilkan variabel lokal suatu fungsi ke dalam main secara langsung? Perhatikan kode berikut :
+```bash
+nano scope_error.cpp
+```
+```cpp
+#include <iostream>
+using namespace std;
+
+void fungsi(){
+  int angka = 15;
+}
+
+int main(){
+  fungsi();
+  cout << angka << endl;
+  return 0;
+}
+```
+```bash
+g++ test.cpp
+ error: ‘angka’ was not declared in this scope
+```
+Dapat terlihat bahwa compiler melempar error 'angka' was not declared in this scope karena ketika alur eksekusi kembali ke main(), Stack Frame milik fungsi() sudah di-deallocate dari RAM oleh CPU. Alamat memori untuk variabel angka sudah hilang dan tidak eksis lagi di sistem, membuktikan bahwa isolasi ruang lingkup (scope) lokal antar-fungsi bekerja dengan aman, ketat, dan absolut di dalam arsitektur C++.
+
+
+
+
 
