@@ -136,6 +136,58 @@ g++ alamat_pointer.cpp -o alamat_pointer
 Alamat fisik dari pointer 'ptr_pi' : 0x7fff72ffb640
 ```
 
+## NULL POINTER
+Ketika kita mendeklarasikan sebuah variabel pointer tanpa langsung memberikan alamat memori target, pointer tersebut tidaklah kosong. Ia akan menampung Alamat Liar (Wild Pointer) berisi nilai acuan sampah (garbage value). Seperti ini contohnya :
+```bash
+nano garbage_value.cpp
+```
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(){
+  int *pointer;
+  cout << pointer;
+  return 0;
+}
+```
+```bash
+g++ garbage_value.cpp -o garbage_value
+```
+```bash
+./garbage_value
+```
+```bash
+0x7ffcd6977728
+```
+Ini memang terlihat aneh karena pointer yang awalnya dideklarasikan tanpa memiliki nilai apapun tiba tiba mempunyai nilai berupa alamat acak seperti output program diatas.
+
+Untuk mencegah hal tersebut, C++ menyediakan kata kunci khusus bernama `nullptr`. `nullptr` adalah literal penanda tipe data pointer yang secara eksplisit menyatakan bahwa pointer tersebut dalam kondisi kosong dan tidak sedang menunjuk ke alamat memori fisik mana pun (biasanya bernilai 0). Berikut adalah sintaksnya :
+```cpp
+tipe_data *nama_pointer = nullptr;
+```
+```bash
+nano nullptr.cpp
+```
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(){
+  int *nptr = nullptr;
+  cout << nptr;
+}
+```
+```bash
+g++ nullptr.cpp -o nullptr
+```
+```bash
+./nullptr
+```
+```bash
+0
+```
+
 
 ## REFERENCE
 Reference adalah sebuah fitur di C++ yang digunakan untuk membuat nama lain dari variabel yang sudah ada. Berbeda dengan pointer yang bertindak sebagai variabel mandiri untuk menyimpan alamat memori dari variabel lain sehingga membuat alokasi alamat baru untuknya, reference justru tidak memiliki alamat memorinya sendiri. Ia murni melekat dan berbagi alamat memori yang sama persis dengan variabel asli yang telah ditujukan untuknya (bukan salinan). Penggunaan reference juga tidak terlalu berbahaya seperti pointer, karena walaupun kita melakukan kesalahan dan secara tidak sengaja merubah nilainya, ia hanya berdampak pada logika program kita khususnya yang memiliki hubungan dengan program tersebut, dan tidak menimbulkan crash atau kerusakan pada hardware.
