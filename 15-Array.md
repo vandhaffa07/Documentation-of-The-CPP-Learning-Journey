@@ -147,5 +147,51 @@ Elemen 5 -> Alamat: 0x7ffd51bb2a40 | Nilai (Dereference): 5
 ```
 Pada program diatas, setelah kita menginisialisasikan pointer yang mengarah ke nama array, sebenarnya mengarah ke alamat dasar array. Sehingga, ketika kita melakukan operasi `ptr + 1`, CPU tidak menambahkan alamat yang berupa angka hexadecimal dengan nilai 1, melainkan menambahkan alamat tersebut dengan ukuran dari tipe data yang ditunjuk.
 
+## MELEMPAR ARRAY KE DALAM FUNGSI
+Pada file sebelumnya, kita sudah belajar bahwa memodifikasi data lintas fungsi memerlukan Passing by Reference/Pointer. Namun, hal tersebut tidak berlaku saat kita bekerja dengan Array. Karena ketika kita melempar Array ke dalam parameter fungsi, C++ secara otomatis akan melakukan Array Decay, di mana Array tersebut luruh dan dikirim sebagai Pointer biasa ke elemen pertamanya. Efeknya, memodifikasi Array di dalam fungsi akan langsung mengubah Array asli di main(), karena secara implisit ia menggunakan metode Passing by Pointer :
+```bash
+nano manipulasi_array.cpp
+```
+```cpp
+#include <iostream>
+using namespace std;
+
+void kalikanDua(int arr[]) {
+  for (int i = 0; i < 3; i++) {
+    arr[i] = arr[i] * 2;
+  }
+}
+
+int main() {
+  int data[3] = {5, 10, 15};
+
+  cout << "Kondisi awal data array di main: ";
+  for(int i = 0; i < 3; i++){
+    cout << data[i] << " ";
+  }
+  cout << endl;
+
+  kalikanDua(data);
+
+  cout << "Kondisi setelah fungsi dieksekusi: ";
+  for(int i = 0; i < 3; i++){
+    cout << data[i] << " ";
+  }
+    return 0;
+}
+```
+```bash
+g++ manipulasi_array.cpp -o manipulasi_array
+```
+```bash
+./manipulasi_array
+```
+```bash
+Kondisi awal data array di main: 5 10 15 
+Kondisi setelah fungsi dieksekusi: 10 20 30 
+```
+
+
+
 
 
