@@ -52,6 +52,54 @@ Indeks ke-4 : 5
 ```
 Terlihat bahwa std array memberikan output yang sama dengan saat kita menggunakan array tradisional di file sebelumnya. Hal ini juga menegaskan bahwa std array benar-benar hanyalah array tradisional yang dibungkus kedalam wadah yang memiliki fitur canggih.
 
+## FITUR-FITUR CANGGIH STD ARRAY
+### SIZE() 
+Pada array tradisional, array tidak menyimpan informasi ukurannya sendiri sehingga kita harus menghitung manual menggunakan operator sizeof seperti ini :
+```bash
+nano sizeof_array.cpp
+```
+```cpp
+#include <iostream>
+using namespace std;
+
+int main(){
+  int array_nilai[3] = {100, 98, 90};
+  int banyak_elemen = sizeof(array_nilai)/sizeof(int);
+  cout << banyak_elemen << endl;
+  return 0;
+}
+```
+```bash
+g++ sizeof_array.cpp -o sizeof_array
+```
+```bash
+./sizeof_array
+```
+```bash
+3
+```
+Namun, di dalam naungan `std::array`, informasi jumlah elemen disimpan oleh `.size()` sebagai nilai konstan internal sejak program pertama kali dikompilasi karena sifat dari ukuran `std::array` yang bersifat statis (tetap) dan tidak bisa membesar secara dinamis saat runtime. Berikut adalah contoh penggunaanya :
+
+### AT()
+
+### FILL()
+
+### FRONT() DAN BACK()
+
+### SWAP()
+
+### EMPTY()
+
+### BEGIN() DAN END()
+
+### DATA()
+
+
+
+
+
+
+
 
 
 
