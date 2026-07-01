@@ -104,9 +104,41 @@ Banyaknya Elemen : 4
 ```
 
 ### AT()
-`at()` adalah fitur keselamatan terpenting dalam perspektif seorang proffesional untuk menghadapi crash. Jika kita menggunakan kurung siku standar pada array tradisional (`array[indeks]`), CPU akan langsung melompat ke alamat memori tanpa peduli apakah indeks tersebut valid atau tidak, hal ini kemudian bisa memicu Buffer Overflow/Overread. Ketika kita memanggil `.at(indeks)`, sistem  akan melakukan Bounds Checking di balik layar dengan logika sebagai berikut :
+`at()` adalah fitur keselamatan terpenting dalam perspektif seorang proffesional untuk menghadapi crash. Jika kita menggunakan kurung siku standar pada array tradisional (`array[indeks]`), CPU akan langsung melompat ke alamat memori tanpa peduli apakah indeks tersebut valid atau tidak, hal ini kemudian bisa memicu Buffer Overflow/Overread.
+
+Ketika kita memanggil `.at(indeks)`, sistem  akan melakukan Bounds Checking di balik layar dengan logika sebagai berikut :
+
+$$Jika \space Indeks >= size(), \space Maka \space Lemparkan \space Interupsi \space Sistem!$$
+
+Jika kita melanggar batas jangkauan array, C++ akan memicu exception bernama out of range dan menghentikan jalannya program seketika sebelum data ilegal di RAM sempat terbaca atau dirusak seperti ini :
+```bash
+nano at.cpp
+```
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main() {
+  array<int, 4> list_id = {10, 20, 30, 40};
+  cout << "Indeks ke-6 : " << list_id.at(6) << endl; 
+  return 0;
+}
+```
+```bash
+g++ at.cpp -o at
+```
+```bash
+./at
+```
+```bash
+terminate called after throwing an instance of 'std::out_of_range'
+what():  array::at: __n (which is 6) >= _Nm (which is 4)
+Aborted (core dumped)
+```
 
 ### FILL()
+
 
 ### FRONT() DAN BACK()
 
