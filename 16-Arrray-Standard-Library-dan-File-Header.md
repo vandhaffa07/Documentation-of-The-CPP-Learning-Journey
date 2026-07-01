@@ -79,8 +79,32 @@ g++ sizeof_array.cpp -o sizeof_array
 3
 ```
 Namun, di dalam naungan `std::array`, informasi jumlah elemen disimpan oleh `.size()` sebagai nilai konstan internal sejak program pertama kali dikompilasi karena sifat dari ukuran `std::array` yang bersifat statis (tetap) dan tidak bisa membesar secara dinamis saat runtime. Berikut adalah contoh penggunaanya :
+```bash
+nano size.cpp
+```
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main(){
+  array <char, 4> huruf = {'A', 'B', 'C', 'D'};
+  cout << "Banyaknya Elemen : " << huruf.size() << endl;
+  return 0;
+}
+```
+```bash
+g++ size.cpp -o size
+```
+```bash
+./size
+```
+```bash
+Banyaknya Elemen : 4
+```
 
 ### AT()
+`at()` adalah fitur keselamatan terpenting dalam perspektif seorang proffesional untuk menghadapi crash. Jika kita menggunakan kurung siku standar pada array tradisional (`array[indeks]`), CPU akan langsung melompat ke alamat memori tanpa peduli apakah indeks tersebut valid atau tidak, hal ini kemudian bisa memicu Buffer Overflow/Overread. Ketika kita memanggil `.at(indeks)`, sistem  akan melakukan Bounds Checking di balik layar dengan logika sebagai berikut :
 
 ### FILL()
 
