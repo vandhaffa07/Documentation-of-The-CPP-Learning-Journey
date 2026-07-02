@@ -102,6 +102,30 @@ g++ size.cpp -o size
 ```bash
 Banyaknya Elemen : 4
 ```
+Karena sifatnya yang demikian pula, perintah ini akan tetap mengambil informasi banyaknya elemen/ukuran pada angka yang dituliskan sebelum tanda "<". meskipun kita hanya menginisiasi beberapa elemen array saja :
+```bash
+nano size.cpp
+```
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main(){
+  array <char, 4> huruf = {'A', 'B', 'C'};
+  cout << "Banyaknya Elemen : " << huruf.size() << endl;
+  return 0;
+}
+```
+```bash
+g++ size.cpp -o size
+```
+```bash
+./size
+```
+```bash
+Banyaknya Elemen : 4
+```
 
 ### AT()
 `at()` adalah fitur keselamatan terpenting dalam perspektif seorang proffesional untuk menghadapi crash. Jika kita menggunakan kurung siku standar pada array tradisional (`array[indeks]`), CPU akan langsung melompat ke alamat memori tanpa peduli apakah indeks tersebut valid atau tidak, hal ini kemudian bisa memicu Buffer Overflow/Overread.
@@ -138,11 +162,84 @@ Aborted (core dumped)
 ```
 
 ### FILL()
+`.fill()` digunakan untuk mengisi atau mereset seluruh elemen dengan nilai yang seragam. Secara teknis, ia akan menyapu bersih seluruh alamat memori dari elemen pertama hingga terakhir dan mengisinya dengan data baru yang kita tentukan dengan sangat cepat.
 
+Berikut adalah contoh penggunaan `.fill()` :
+```bash
+nano fill.cpp
+```
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main(){
+  array<int, 3> nilai = {98, 100, 87};
+  
+  for (int i = 0; i < nilai.size(); i++){
+    cout << "Indeks ke- " << i << " : " << nilai.at(i) << endl;
+  }
+  cout << endl;
+  
+  nilai.fill(75);
+  for (int i = 0; i < nilai.size(); i++){
+    cout << "Indeks ke- " << i << " : " << nilai.at(i) << endl;
+  }
+  return 0;
+}
+```
+```bash
+g++ fill.cpp -o fill
+```
+```bash
+./fill
+```
+```bash
+Indeks ke-0 : 98
+Indeks ke-1 : 100
+Indeks ke-2 : 87
+
+Indeks ke-0 : 75
+Indeks ke-1 : 75
+Indeks ke-2 : 75
+```
 
 ### FRONT() DAN BACK()
+Di dalam memori RAM, elemen pertama selalu berada di Alamat Dasar (Base Address), sedangkan elemen terakhir berada di koordinat batas akhir alokasi array. `.front()` dan `.back()` sendiri merupakan fitur yang berhubungan dengan hal tersebut.
+
+`.front()` bekerja dengan cara mengembalikan referensi data langsung pada elemen pertama (indeks 0). Sedangkan `.back()` bekerja dengan cara menghitung posisi elemen terakhir berbasis data size() - 1 lalu mengembalikan referensinya.
+
+Fitur ini membuat kode kita menjadi sangat ekspresif tanpa perlu menulis indeks manual seperti `array[0]` atau `array[array.size() - 1]`
+
+Berikut adalah contoh penggunaannya:
+```bash
+nano front_back.cpp
+```
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main(){
+  array <string, 3> nama = {"andi", "budi", "cindy"};
+  cout << "Elemen pertama : " << nama.front() << endl;
+  cout << "Elemen terakhir : " << nama.back() << endl;
+  return 0;
+}
+```
+```bash
+g++ front_back.cpp -o front_back
+```
+```bash
+./front_back
+```
+```bash
+Elemen pertama : andi
+Elemen terakhir: cindy
+```
 
 ### SWAP()
+Fungsi `.swap()` digunakan untuk menukar seluruh isi data antara dua buah std::array. Syarat mutlaknya adalah kedua array tersebut harus memiliki tipe data dan ukuran kapasitas yang sama persis.
 
 ### EMPTY()
 
