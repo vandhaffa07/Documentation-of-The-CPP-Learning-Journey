@@ -241,14 +241,148 @@ Elemen terakhir: cindy
 ### SWAP()
 Fungsi `.swap()` digunakan untuk menukar seluruh isi data antara dua buah std::array. Syarat mutlaknya adalah kedua array tersebut harus memiliki tipe data dan ukuran kapasitas yang sama persis.
 
-### EMPTY()
+Berikutadalah contoh penggunaannya :
+```bash
+nano swap.cpp
+```
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
 
+int main(){
+  array<char, 3> huruf1 = {'A', 'B', 'C'};
+  array<char, 3> huruf2 = {'D', 'E', 'F'};
+  cout << "huruf1 : ";
+  for (int i = 0; i < huruf1.size(); i++){
+    cout << huruf1.at(i) << "  ";
+  }
+  cout << "huruf2 : ";
+  for (int i = 0; i < huruf2.size(); i++){
+    cout << huruf2.at(i) << "  ";
+  }
+  
+  cout << endl << endl;
+  
+  huruf1.swap(huruf2);
+  cout << "huruf1 : ";
+  for (int i = 0; i < huruf1.size(); i++){
+    cout  << huruf1.at(i) << "  ";
+  }
+  cout << "huruf2 : ";
+  for (int i = 0; i < huruf2.size(); i++){
+    cout << huruf2.at(i) << "  ";
+  }
+  return 0;
+}
+```
+```bash
+g++ swap.cpp -o swap
+```
+```bash
+./swap
+```
+```bash
+huruf1 : A  B  C  huruf2 : D  E  F
+
+huruf1 : D  E  F  huruf1 : A  B  C
+```
+
+### EMPTY()
+`.empty()` merupakan fitur yang bertindak sebagai detektor untuk memeriksa apakah suatu array memiliki kapasitas elemen tau tidak. Perlu digarisbawahi secara ketat bahwa dikarenakan std array bersifat statis (ukurannya dikunci sejak awal kompilasi), fungsi `.empty()` hanya akan menghasilkan nilai true jika dan hanya jika kita mendeklarasikan array dengan ukuran 0. Jika kita mendeklarasikan array dengan ukuran/banyak elemen yang lebih besar dari 0 tetapi belum mengisi angka apa pun di dalamnya, `.empty()` akan tetap menghasilkan nilai false karena slot fisiknya sudah teralokasi di RAM.
+
+Berikut adalah contoh penggunaannya :
+```bash
+nano empty.cpp
+```
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main(){
+  array<int, 4> array_biasa = {};
+  array<int, 0> array_kosong;
+
+  cout << "Apakah array_biasa kosong? : " << array_biasa.empty() << endl;
+  cout << "Apakah array_kosong kosong? : " << array_kosong.empty() << endl;
+  return 0;
+}
+```
+```bash
+g++ empty.cpp -o empty
+```
+```bash
+./empty
+```
+```bash
+Apakah array_biasa kosong? : 0
+Apakah array_biasa kosong? : 1
+```
 ### BEGIN() DAN END()
+`.begin()` digunakan untuk mengembalikan pointer yang menunjuk tepat pada elemen pertama (indeks 0), sedangkan `.end()` digunakan untuk mengembalikan pointer yang menunjuk tepat pada slot memori setelah elemen terakhir (sebagai penanda batas stop/gerbang keluar).
+
+Berikut adalah contoh penggunaanya :
+```bash
+begin_end.cpp
+```
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
+
+int main() {
+  array<int, 3> data = {10, 20, 30};
+  cout << ".begin() = " << data.begin() << endl;
+  cout << ".end() = " << data.end() << endl;
+  return 0;
+}
+```
+```bash
+g++ begin_end.cpp -o begin_end
+```
+```bash
+./begin_end
+```
+```bash
+.begin() = 0x7ffd3fa18704
+.end() = 0x7ffd3fa18710
+```
 
 ### DATA()
+Pada array tradisional, ketika kita mengeluarkan nilai dari nama array tersebut menggunakan `cout`, maka keluarannya adalah alamat dasar dari array tersebut (indeks 0). Fungsi data sendiri digunakan untuk mengeluarkan alamat dasar dari array tanpa menggunakan `nama_array.at(0)`. Karena, ketika menggunakan std array dan ingin mengelurakan output alamat dasar dengan hanya memanggil namanya, maka compiler akan menampilkan error.
 
+Berikut adalah contoh penggunaannya :
+```bash
+nano data.cpp
+```
+```cpp
+#include <iostream>
+#include <array>
+using namespace std;
 
+int main() {
+  array<int, 3> data = {10, 20, 30};
+  cout << "Alamat dasar via .data() : " << data.data() << endl << endl;
+  for(int i = 0; i < data.size(); i++){
+    cout << "Alamat indeks ke-" << i << " : " << &data.at(i) << endl;
+  }
+  return 0;
+}
+```
+```bash
+g++ data.cpp -o data
+```
+```bash
+./data
+```
+```bash
+Alamat dasar via .data() : 0x7ffe156c8710
 
+Alamat indeks ke-0 : 0x7ffe156c8710
+Alamat indeks ke-1 : 0x7ffe156c8714
+Alamat indeks ke-2 : 0x7ffe156c8718
+```
 
 
 
