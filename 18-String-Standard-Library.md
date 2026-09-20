@@ -3,10 +3,28 @@ Dalam C++, string dapat diartikan sebagai kumpulan karakter secara berurutan yan
 
 ---
 
+## CARA MENGGUNAKAN STRING
+Untuk menggunakan string kita wajib memasukkan library bernama string kedalam program kita menggunakan include seperti ini (khusunya pada c++ dengan versi yang lumayan lawas) :
+```c++
+#include <string>
+```
+Namun, dalam c++ modern atau compiler modern, library string biasanya dimasukkan secara otomatis pada iostream sehingga tidak perlu menggunakan include string untuk program kita. Tapi, dalam tingkat profesional 
+
+---
+
 ## STRUKTUR STD STRING BEKERJA
 Karena `std::string` merupakan kontainer pembungkus array, ia otomatis memiliki aturan-aturannya sendiri yang berbeda dari array biasa, khususnya pada bagian alokasi memori dan mekanisme kerjanya. 
 
 Dalam `std::string`, compiler menyimpan setidaknya 3 variabel utama untuk dikelola:
 
 ### 1. Pointer karakter pertama
-Compiler menyimpan sebuah pointer yang menunjuk langsung ke alamat memori karakter pertama pada string. Hal ini sama mirip seperti array biasa yang menyimpan informasi berupa base addres array (alamat elemen pertama). Sebelumnya perlu diketahui bahwa `std::string` menggunakan heap untuk melakukan pengolahan memori, itulah sebabnya mengapa dapat dilakukan penambahan karakter pada std 
+Compiler menyimpan sebuah pointer yang menunjuk langsung ke alamat memori karakter pertama pada string. Hal ini mirip seperti array biasa yang menyimpan informasi berupa base addres array (alamat indeks ke-0). Sebelumnya perlu diketahui bahwa `std::string` menggunakan heap secara otomatis untuk melakukan pengolahan memori, itulah sebabnya mengapa `std::string` dapat dilakukan penambahan atau pengurangan karakter menggunakan operator aritmatika sehingga bersifat dinamis.
+
+Namun, penggunaan heap untuk melakukan pengolahan membutuhkan waktu yang lebih lama daripada ketika menggunakan stack. Oleh karena itu, C++ menggunakan mekanisme SSO (Small String Optimization). SSO sendiri merupakan teknik optimasi memori menggunakan stack yang digunakan C++ untuk mengolah string dengan jumlah karakter yang kecil (biasanya antara 15-23 karakter atau kurang). Dengan menggunakan SSO yang menggunakan stack sebagai tempat memorinya, pengolahan string dapat dilakukan dengan performa yang lebih cepat dan ringan.
+
+Untuk membuktikannya, kita dapat menjalankan program seperti ini :
+```bash
+nano test_string.cpp
+```
+
+
