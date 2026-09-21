@@ -8,7 +8,37 @@ Untuk menggunakan string kita wajib memasukkan library bernama string kedalam pr
 ```c++
 #include <string>
 ```
-Namun, dalam c++ modern atau compiler modern, library string biasanya dimasukkan secara otomatis pada iostream sehingga tidak perlu menggunakan include string untuk program kita. Tapi, dalam tingkat profesional 
+Namun, dalam c++ modern atau compiler modern, library string biasanya dimasukkan secara otomatis pada library iostream sehingga tidak perlu menggunakan include string untuk program kita. Tapi, dalam tingkat profesional, penulisan include string tetap menjadi pilihan terbaik yang bisa dilakukan 
+
+Berikut adalah contoh penggunaan `std:: string` :
+```bash
+nano penggunaan_string.cpp
+```
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+    string teks1 = "Halo teman-teman";
+    string teks2("Selamat pagi");
+    
+    cout << "teks1 : " << teks1 << endl;
+    cout << "teks2 : " << teks2 << endl;
+
+    return 0;
+}
+```
+```bash
+g++ penggunaan_string.cpp -o penggunaan_string
+```
+```bash
+./penggunaan_string
+teks1 : Halo teman-teman
+teks2 : Selamat pagi
+```
+Dapat terlihat bahwa string dapat didefinisikan menggunakan "=" atau didalam tanda kurung "()"
 
 ---
 
@@ -26,5 +56,27 @@ Untuk membuktikannya, kita dapat menjalankan program seperti ini :
 ```bash
 nano test_string.cpp
 ```
+```c++
+#include <iostream>
+#include <string>
+using namespace std;
 
+int main() {
+    string short_str = "Halo";
+    cout << "Isi string pendek: " << short_str << "\n\n";
+
+    short_str += " C++";
+    cout << "Isi string pendek baru : " << short_str << "\n\n";
+
+    string long_str = "Ini adalah teks yang sangat panjang sekali dan pasti melewati batas Small String Optimization!";
+    cout << "Isi string panjang: " << long_str << "\n\n";
+
+    cout << "Alamat objek short_str : " << (void*)&short_str << "\n";
+    cout << "Alamat elemen pertama short_str : " << (void*)short_str.data() << "\n";
+    cout << "Alamat objek long_str : " << (void*)&long_str << "\n";
+    cout << "Alamat data long_str : " << (void*)long_str.data() << "\n";
+
+    return 0;
+}
+```
 
