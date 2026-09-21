@@ -79,4 +79,32 @@ int main() {
     return 0;
 }
 ```
+```bash
+g++ test_string.cpp -o test_string
+```
+```bash
+./test_string
+Isi string pendek : Halo
+
+Isi string pendek baru : Halo C++
+
+Isi string panjang : Ini adalah teks yang sangat panjang sekali dan pasti melewati batas Small String Optimization!
+
+Alamat objek short_str : 0x7ffe2a6e4d50
+Alamat elemen pertama short_str : 0x7ffe2a6e4d60
+Alamat objek long_str : 0x7ffe2a6e4d30
+Alamat elemen pertama long_str : 
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
