@@ -38,7 +38,7 @@ g++ penggunaan_string.cpp -o penggunaan_string
 teks1 : Halo teman-teman
 teks2 : Selamat pagi
 ```
-Dapat terlihat bahwa string dapat didefinisikan menggunakan "=" atau didalam tanda kurung "()"
+Dapat terlihat bahwa program benar-benar menampilkan output sesuai dengan yang kita inginkan. Dari output ini pula, kita dapat mengetahui bahwa string dapat didefinisikan menggunakan "=" (inisialisasi seperti pada umumnya) atau didalam tanda kurung "()".
 
 ---
 
@@ -63,10 +63,10 @@ using namespace std;
 
 int main() {
     string short_str = "Halo";
-    cout << "Isi string pendek: " << short_str << "\n\n";
+    cout << "Isi string pendek: " << short_str << "\n";
 
     short_str += " C++";
-    cout << "Isi string pendek baru : " << short_str << "\n\n";
+    cout << "Isi string pendek baru : " << short_str << "\n";
 
     string long_str = "Ini adalah teks yang sangat panjang sekali dan pasti melewati batas Small String Optimization!";
     cout << "Isi string panjang: " << long_str << "\n\n";
@@ -85,9 +85,7 @@ g++ test_string.cpp -o test_string
 ```bash
 ./test_string
 Isi string pendek : Halo
-
 Isi string pendek baru : Halo C++
-
 Isi string panjang : Ini adalah teks yang sangat panjang sekali dan pasti melewati batas Small String Optimization!
 
 Alamat objek short_str : 0x7ffe2a6e4d50
@@ -95,10 +93,17 @@ Alamat elemen pertama short_str : 0x7ffe2a6e4d60
 Alamat objek long_str : 0x7ffe2a6e4d30
 Alamat elemen pertama long_str : 0x596a557707d30
 ```
-Sebelum menjelaskan output dari masing-masing alamat fisik pada program tersebut, perlu diketahui bahwa alamat objek dan alamat elemen pertama suatau string merupakan dua hal yang berbeda. Alamat objek merupakan 
+Sebelumnya, perlu diketahui bahwa alamat objek dan alamat elemen pertama dari `std::string` merupakan dua hal yang berbeda. Alamat objek merupakan alamat yang merujuk pada objek pembungkus dari string yang dideklarasikan/diinisialisasikan, objek pembungkus ini tidak lain dan tidak bukan adalah `std::string` itu sendiri yang membungkus suatu array karakter. Alamat objek menggunakan bagian memori stack sebagai tempat alokasinya, hal ini dapat dilihat melalui output alamat dari objek bernama `short_str` dan `long_str` pada program diatas, dimana mereka berdua sama-sama memiliki alamat dengan format `0x7ff....` yang merupakan ciri khas dari alamat yang berada pada arsitektur stack. 
 
+Sedangkan alamat dari elemen pertama merujuk pada lokasi fisik tempat karakter pertama pada suatu string disimpan (merujuk pada array karakternya, bukan objek yang membungkusnya). Alamat ini dapat menggunakan bagian memori stack maupun heap tergantung dengan panjang stringnya. Jika panjang string telah melewati batas karakter maksimal dari mekanisme SSO, maka ia akan dialokasikan di stack, sedangkan jika belum melewati batas karakter maksimal dari mekanisme SSO, maka ia akan dialokasikan di heap. Sebagai contoh, output alamat dari elemen pertama `short_str` pada program diatas memiliki format `0x7ff....`, dimana format ini merupakan format yang sama seperti pada output-output sebelumnya yang dialokasikan pada bagaian memori stack. Hal ini disebabkan karena jumlah karakter pada `short_str` hanyalah sebesar 8 karakter yang secara aturan, ia belum melewati batas karakter maksimal dari mekanisme SSO. Sedangkan pada alamat elemen pertama `long_str`, jumlah karakternya melebihi angka 23 yang secara aturan melewati batas karakter maksimal SSO. Hal inilah membuat ia dialokasikan di heap secara otomatis. Sebagai bukti konkret, dapat terlihat bahwa format alamat elemen pertama `long_str` sangat-sangat berbeda dengan alamat pada output-output sebelumnya, dimana alamat dari elemen pertama `long_str` ini memiliki format `0x59....` bukan `0x7ff`, sehingga dapat disimpulkan bahwa ia benar-benar dialokasikan di bagian memori heap.
 
+Sebagai catatan tambahan, penggunaan `(void*)` memiliki fungsi untuk mencegah `cout` menganggap data tersebut sebagai teks. Sebab, dalam C++, `cout` mempunyai perlakuan khusus untuk pointer bertipe `char*` seperti string, dimana ketika kita memberikan variabel bertipe `char*` ke `cout` melalui operator `<<`, `cout` akan membaca isi teksnya sampai ia bertemu dengan karakter null-terminator (\0) meskipun sudah ditambahkan notasi & pada awal variabel. Penggunaan `(void*)` digunakan supaya `cout` menganggap data tersebut sebagai suatu pointer sehingga bisa menampilkan alamatnya.
 
+### 2. Ukuran/Panjang String
+Compiler menyimpan jumlah karakter yang digunakan pada saat ini. Jumlah ini memiliki sifat yang dinamis atau dapat berubah-ubah pada saat program berjalan sesuai dengan instruksi yang dapat menambah atau menguranginya. Sebagai contoh, ketika kita memiliki string "Halo", maka compiler akan menyimpan angka 4 sebagai ukuran dari string tersebut (karena kata "Halo" memiliki total sebanyak 4 karakter). Lalu, ketika kita menggunakan notasi `+= " Dunia"`, maka compiler akan memperbarui angka 4 menjadi 10 sebagai ukuran dari string tersebut (karena kata "Halo Dunia" memiliki total sebanyak 10 karakter).
+
+### 3. Kapasitas
+Tidak hanya menyimpan ukuran dari string, compiler juga menyimpan kapasitas dari string tersebut. Dalam konteks c++, kapasitas dapat diartikan total alokasi memori yang tersedia sebelum string harus merealokasi memori baru. Jadi, ketika kita memiliki string "Halo" misalnya, compiler sebenarnya tidak mengalokasikan memori dengan jumlah 4 byte (4 karakter) yang notabenenya merupakan jumlah karakter dari string "Halo" tersebut, melainkan mengalokasikan 15 byte (umumnya). Angka 15 inilah yang kemudian disimpan oleh compiler sebagai kapasitas. Menariknya, ketika kita menambahkan beberapa karakter pada string tersebut menggunakan notasi `+` atau `+=` tetapi ukurannya tidak melebihi 15 karakter (kapasitasnya), maka nilai kapasitasnya masih tetap 15. Sedangkan jika kita menambahkan beberapa karakter sehingga totalnya melebihi kapasitasnya saat itu (sampai 16 karakter misalnya), maka nilai kapasitas akan diperbarui menjadi dua kali lipat dari nilai sebelumnya, yang pada kasus ini nilai kapasitas akan diperbarui menjadi 30 (2x15). Mekanisme ini digunakan untuk mempersingkat dan mengefisienkan alokasi memori pada heap yang membutuhkan waktu lama. Dimana, jika `std::string` hanya mengalokasikan memori secara pas sesuai dengan ukurannya pada saat itu, maka setiap kali kita menambahkan beberapa karakter baru, komputer harus mencari blok memori baru yang kosong dan cukup pada heap, kemudian menyalin seluruh karakter lama ke memori baru tersebut, menambahkan karakter yang baru ke memori baru tersebut, dan menghapus lokasi memori yang lama. Langkah-langkah tersebut sangat lambat dan memerlukan waktu yang cukup lama hanya untuk melakukan penambahan karakter. Oleh karena itu, mekanisme ini digunakan agar setiap kali dilakukan penambahan karakter, komputer tidak terus-terusan melakukan langkah-langkah tadi, melainkan hanya menyesuaikan nilai kapasitasnya. 
 
 
 
