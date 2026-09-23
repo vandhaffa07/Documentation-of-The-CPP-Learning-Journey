@@ -93,10 +93,9 @@ Isi string panjang : Ini adalah teks yang sangat panjang sekali dan pasti melewa
 Alamat objek short_str : 0x7ffe2a6e4d50
 Alamat elemen pertama short_str : 0x7ffe2a6e4d60
 Alamat objek long_str : 0x7ffe2a6e4d30
-Alamat elemen pertama long_str : 
+Alamat elemen pertama long_str : 0x596a557707d30
 ```
-
-
+Sebelum menjelaskan output dari masing-masing alamat fisik pada program tersebut, perlu diketahui bahwa alamat objek dan alamat elemen pertama suatau string merupakan dua hal yang berbeda. Alamat objek merupakan 
 
 
 
