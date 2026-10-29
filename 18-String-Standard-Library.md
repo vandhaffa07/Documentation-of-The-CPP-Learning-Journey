@@ -105,6 +105,32 @@ Compiler menyimpan jumlah karakter yang digunakan pada saat ini. Jumlah ini memi
 ### 3. Kapasitas
 Tidak hanya menyimpan ukuran dari string, compiler juga menyimpan kapasitas dari string tersebut. Dalam konteks c++, kapasitas dapat diartikan total alokasi memori yang tersedia sebelum string harus merealokasi memori baru. Jadi, ketika kita memiliki string "Halo" misalnya, compiler sebenarnya tidak mengalokasikan memori dengan jumlah 4 byte (4 karakter) yang notabenenya merupakan jumlah karakter dari string "Halo" tersebut, melainkan mengalokasikan 15 byte (umumnya). Angka 15 inilah yang kemudian disimpan oleh compiler sebagai kapasitas. Menariknya, ketika kita menambahkan beberapa karakter pada string tersebut menggunakan notasi `+` atau `+=` tetapi ukurannya tidak melebihi 15 karakter (kapasitasnya), maka nilai kapasitasnya masih tetap 15. Sedangkan jika kita menambahkan beberapa karakter sehingga totalnya melebihi kapasitasnya saat itu (sampai 16 karakter misalnya), maka nilai kapasitas akan diperbarui menjadi dua kali lipat dari nilai sebelumnya, yang pada kasus ini nilai kapasitas akan diperbarui menjadi 30 (2x15). Mekanisme ini digunakan untuk mempersingkat dan mengefisienkan alokasi memori pada heap yang membutuhkan waktu lama. Dimana, jika `std::string` hanya mengalokasikan memori secara pas sesuai dengan ukurannya pada saat itu, maka setiap kali kita menambahkan beberapa karakter baru, komputer harus mencari blok memori baru yang kosong dan cukup pada heap, kemudian menyalin seluruh karakter lama ke memori baru tersebut, menambahkan karakter yang baru ke memori baru tersebut, dan menghapus lokasi memori yang lama. Langkah-langkah tersebut sangat lambat dan memerlukan waktu yang cukup lama hanya untuk melakukan penambahan karakter. Oleh karena itu, mekanisme ini digunakan agar setiap kali dilakukan penambahan karakter, komputer tidak terus-terusan melakukan langkah-langkah tadi, melainkan hanya menyesuaikan nilai kapasitasnya. 
 
+---
+
+## MEMBER FUNCTION DALAM STRING
+### ITERATORS
+Sebagai pengantar, iterator adalah sebuah objek yang menunjuk ke posisi atau nilai tertentu di dalam suatu wadah data (array, string, vector, dll), bukan nilai data itu sendiri. Secara umum, iterator digunakan untuk menelusuri, membaca, mengubah, serta mengakses elemen-elemen yang ada di dalam sebuah wadah data dengan lebih mudah. Secara teknis, pointer juga merupakan salah satu bagian dari itertaor itu sendiri yang berfungsi untuk menyimpan alamat dari suatu data. 
+
+Dalam konteks std::string, penggunaan iterator dapat diakses melalui sintaks berikut :
+```c++
+std::string::iterator nama_iterator = lokasi_iterator
+```
+**1. begin()**
+Berfungsi untuk mengembalikan sebuah iterator yang menunjuk ke karakter pertama dari suatu string.
+Berikut adalah contoh penggunaan dari begin() :
+```bash
+nano test_begin.cpp
+```
+```c++
+
+```
+```bash
+g++ test_begin.cpp -o test_begin
+```
+```bash
+
+```
+
 
 
 
